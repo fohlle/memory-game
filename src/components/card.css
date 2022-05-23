@@ -1,0 +1,13 @@
+
+.card-main{
+
+}
+
+.card-main img{
+  height:300px;
+  max-width:100%;
+  cursor: pointer;
+  border:rgba(0, 0, 0, 0.1) solid 4px;
+  border-radius:20px;
+  padding:10px;
+}
