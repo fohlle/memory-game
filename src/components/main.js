@@ -19,49 +19,55 @@ import './main.css';
 
 function Main(){
 
+  
   const [pics, setPic] = useState
-  ([
-    {pic:one, clicked:false},
-    {pic:two, clicked:false},
-    {pic:three, clicked:false},
-    {pic:four, clicked:false},
-    {pic:five, clicked:false},
-    {pic:six, clicked:false},
-    {pic:seven, clicked:false},
-    {pic:eight, clicked:false},
-    {pic:nine, clicked:false},
-    {pic:ten, clicked:false},
-    {pic:eleven, clicked:false},
-    {pic:thirteen, clicked:false},
-    {pic:fourteen, clicked:false},
-    {pic:fifteen, clicked:false},
-  ])
-
-  /*
-  const pics = [
-    one,
-    two,
-    three,
-    four,
-    five,
-    six,
-    seven,
-    eight,
-    nine,
-    ten,
-    eleven,
-    thirteen,
-    fourteen,
-    fifteen
+  ({
+    one:     {name:"one",pic:one, clicked:false},
+    two:     {name:"two",pic:two, clicked:false},
+    three:   {name:"three",pic:three, clicked:false},
+    four:    {name:"four",pic:four, clicked:false},
+    five:    {name:"five",pic:five, clicked:false},
+    six:     {name:"six",pic:six, clicked:false},
+    seven:   {name:"seven",pic:seven, clicked:false},
+    eight:   {name:"eight",pic:eight, clicked:false},
+    nine:    {name:"nine",pic:nine, clicked:false},
+    ten:     {name:"ten",pic:ten, clicked:false},
+    eleven:  {name:"eleven",pic:eleven, clicked:false},
+    thirteen:{name:"thirteen",pic:thirteen, clicked:false},
+    fourteen:{name:"fourteen",pic:fourteen, clicked:false},
+    fifteen: {name:"fifteen",pic:fifteen, clicked:false}
+  }
+  )
+  const picsArray = [
+    "one",
+    "two",
+    "three",
+    "four",
+    "five",
+    "six",
+    "seven",
+    "eight",
+    "nine",
+    "ten",
+    "eleven",
+    "thirteen",
+    "fourteen",
+    "fifteen"
   ];
-  */
+
+
+  const [points, setPoints] = useState(0);
+  const [highscore, setHighscore] = useState(0);
 
   function changePic(){
+    let random = picsArray[getRandom()];
+    return random;
   }
+
 
   useEffect( () => {
     console.log("mounting");
-  })
+  },[])
 
   function getRandom(){
     
@@ -70,24 +76,55 @@ function Main(){
   }
 
   function greet(e){
-    console.log("hi");
-    console.log(e.target);
+    const img_path = pics[e.target.id].pic;
+    const picName = e.target.id;
+    let clickTrue = pics[picName].clicked;
+    if(clickTrue){
+      gameOver();
+      return;
+    }
+    setPic(pics => ({...pics,[picName]:{name:picName,pic:img_path,clicked:true}}));
+    add();
+    
   }
 
+  function add(){
+    setPoints(points + 1);
+  }
+
+  function reset(){
+    setPoints(0);
+  }
+
+  function gameOver(){
+    console.log("Game Over");
+    if(points > highscore){
+      setHighscore(points);
+    }
+    resetAll();
+    reset();
+  }
+
+  function resetAll(){
+    picsArray.forEach( node => {
+      setPic(pics => ({...pics,[node]:{...pics[node],clicked:false}}))
+    })
+  }
 
   return (
 
     <div className='main-wrapper'>
       <div className='score-wrapper'>
-        <h3>Score</h3>
-        <h4>HighScore</h4>
+        <h3>Score:{points}</h3>
+        <h4>HighScore{highscore}</h4>
       </div>
       <div className='card-wrapper'>
-      <Card click={greet} randomPic={pics[getRandom()].pic}/>
-      <Card click={greet} randomPic={pics[getRandom()].pic} />  
-      <Card click={greet} randomPic={pics[getRandom()].pic} />
-      <Card click={greet} randomPic={pics[getRandom()].pic} />  
-      <Card click={greet} randomPic={pics[getRandom()].pic} />
+      <Card click={greet} randomPic={pics[changePic()]}/>
+      <Card click={greet} randomPic={pics[changePic()]} />  
+      <Card click={greet} randomPic={pics[changePic()]} />
+      <Card click={greet} randomPic={pics[changePic()]} />  
+      <Card click={greet} randomPic={pics[changePic()]} />
+      
       </div>
     </div>
   )
